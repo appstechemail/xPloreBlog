@@ -34,8 +34,6 @@ ALLOWED_HOSTS = [
     getenv("APP_HOST", default=["*"])
 ]
 
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
-
 
 # Application definition
 
