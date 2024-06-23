@@ -269,7 +269,7 @@ def password_reset_request(request):
 
                 to_email = associated_user.email
                 # full_name = (associated_user.first_name) + \
-                #     '-'+(associated_user.last_name)
+                #    '-'+(associated_user.last_name)
 
                 try:
                     send_mail(from_email=EMAIL, to_email=to_email, subject=subject, html_content=html_content,

@@ -27,11 +27,9 @@ SECRET_KEY = getenv("SECRET_KEY", default="Change_me")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = getenv("DEBUG", False)
+DEBUG = getenv("DEBUG", True)
 
-ALLOWED_HOSTS = [
-    getenv("APP_HOST", default=["*"])
-]
+ALLOWED_HOSTS = ["ALLOWED_HOSTS", 'http://127.0.0.1:8000/']
 
 
 # Application definition
