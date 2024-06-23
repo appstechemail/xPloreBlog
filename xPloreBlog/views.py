@@ -422,16 +422,17 @@ def get_all_posts(request):
         return Post.objects.none()  # just an empty queryset as default
 
     posts = Post.objects.all()
-    page = request.GET.get('page', 1)
-    # print(f"Posts pageno: {page}")
-    paginator = Paginator(posts, 4)  # paginate_by 5
-    try:
-        posts = paginator.page(page)
-        # print(f"Try post pageno: {posts}")
-    except PageNotAnInteger:
-        posts = paginator.page(1)
-    except EmptyPage:
-        posts = paginator.page(paginator.num_pages)
+    if posts.count() > 0:
+        page = request.GET.get('page', 1)
+        # print(f"Posts pageno: {page}")
+        paginator = Paginator(posts, 4)  # paginate_by 5
+        try:
+            posts = paginator.page(page)
+            # print(f"Try post pageno: {posts}")
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
     return render(request, 'xPloreBlog/index.html', {'page': page, 'posts': posts, 'current_date': current_date})
 
 
