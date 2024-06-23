@@ -25,7 +25,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = getenv("SECRET_KEY", default="Change_me")
 
-# 'django-insecure-6m79)%2ed)lw7f%#or^#4+anp48tli_ww+fruws=^urdt5p*u3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = getenv("DEBUG", False)
@@ -33,8 +32,6 @@ DEBUG = getenv("DEBUG", False)
 ALLOWED_HOSTS = [
     getenv("APP_HOST", default=["*"])
 ]
-
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
 
 
 # Application definition
