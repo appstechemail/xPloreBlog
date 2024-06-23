@@ -29,7 +29,7 @@ SECRET_KEY = getenv("SECRET_KEY", default="Change_me")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = getenv("DEBUG", True)
 
-ALLOWED_HOSTS = ["ALLOWED_HOSTS", 'http://127.0.0.1:8000/']
+ALLOWED_HOSTS = ["ALLOWED_HOSTS", "https://xploreblog.onrender.com"]
 
 
 # Application definition
