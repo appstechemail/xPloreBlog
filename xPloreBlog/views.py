@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_list_or_404
 from . models import Post, Project, Tag, Author, PostComment, Reply, Category, Status
 from .utils import generate_chart
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -433,6 +433,8 @@ def get_all_posts(request):
             posts = paginator.page(1)
         except EmptyPage:
             posts = paginator.page(paginator.num_pages)
+    else:
+        page = 0
     return render(request, 'xPloreBlog/index.html', {'page': page, 'posts': posts, 'current_date': current_date})
 
 
@@ -457,8 +459,19 @@ def get_all_posts_category(request, category):
 
 def top_rated_posts(request):
 
-    top_3_posts = (Post.objects.annotate(avg_rating=Avg(
-        'cposts__rating')).order_by('-avg_rating')[:3])
+    # Below query working in SQLITE but not working in PostgreSQL
+
+    # top_3_posts = (Post.objects.annotate(avg_rating=Avg(
+    #     'cposts__rating')).order_by('-avg_rating')[:3])
+
+    # REPLACEMENT OF ABOVE
+    # Annotate posts with the average rating
+    annotated_posts = Post.objects.annotate(avg_rating=Avg(
+        'cposts__rating')).filter(cposts__isnull=False).order_by('-avg_rating')
+
+    # Slice the queryset to get the top 3 posts
+    top_3_posts = annotated_posts[:3]
+
     top_1_post = top_3_posts[0]
     top_2_post = top_3_posts[1]
     top_3_post = top_3_posts[2]
@@ -646,14 +659,16 @@ def new_post_success(request, action_mode):
 
 
 # Welcome Function
-def welcome(request):
-    return render(request, 'xPloreBlog/welcome.html')
+# def welcome(request):
+#     return render(request, 'xPloreBlog/welcome.html')
 
 # About Function
 
 
 def about(request):
-    about = Project.objects.get(id=1)
+    # about = Project.objects.get(id=1)
+    about = get_object_or_404(Project, id=1)
+
     return render(request, "xPloreBlog/about.html", {'about': about})
 
 
@@ -692,10 +707,23 @@ def filter_zero_values(data):
 
 def dashboard_view(request):
     # Aggregate data for the dashboard
-    top_rated_posts = (
-        Post.objects.annotate(avg_rating=Avg('cposts__rating'))
-        .order_by('-avg_rating')[:5]
-    )
+
+    # Below query working in SQLITE but not working in PostgreSQL
+
+    # top_rated_posts = (
+    #     Post.objects.annotate(avg_rating=Avg('cposts__rating'))
+    #     .order_by('-avg_rating')[:5]
+    # )
+
+    # REPLACEMENT OF ABOVE
+
+    # Annotate posts with the average rating
+    annotated_posts = Post.objects.annotate(avg_rating=Avg(
+        'cposts__rating')).filter(cposts__isnull=False).order_by('-avg_rating')
+
+    # Slice the queryset to get the top 3 posts
+    top_rated_posts = annotated_posts[:5]
+
     category_wise_posts = (
         Category.objects.annotate(post_count=Count('categories'))
         .order_by('-post_count')
