@@ -476,7 +476,7 @@ def top_rated_posts(request):
     top_2_post = top_3_posts[1]
     top_3_post = top_3_posts[2]
 
-    return render(request, 'xPloreBlog/welcome.html', {'top_1_post': top_1_post, 'top_2_post': top_2_post, 'top_3_post': top_3_post, })
+    return render(request, 'xPloreBlog/top_rated_posts.html', {'top_1_post': top_1_post, 'top_2_post': top_2_post, 'top_3_post': top_3_post, })
 
 
 class ReadLaterView(View):
